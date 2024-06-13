@@ -1,0 +1,1 @@
+Essas sao as evidencias das chaves invalidas, precisamos que a equipe simcv nos confirme a forma que é gerada a chave do lado deles para podermos replicar.
