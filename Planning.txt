@@ -1,0 +1,31 @@
+21911313	Planejada	13	SIGCX - Adequação dos pagamentos múltiplos para contas NSGD
+21911318	Desejável		SIGCX - Adequar o serviço de DDA em lote para contas NSGD
+21938620	Planejada		SIGCX - 2ª Via de Comprovantes - Botão 'CPFs autorizadores'
+21952454	Planejada		SIGCX - 1ª Via de Comprovante - Pix_Botão 'CPFs autorizadores'
+21874419	Planejada		SIGCX - Evolutiva - Barra Única - Incluir Botão de Retornar ao final de todas as jornadas
+21480638	Planejada		SIGCX - Envio de dados ao SIAAF - DARF - sem Código de barras
+21757105	Planejada	8	SIGCX - Estudo para retirada do modulo sinbc-habitacao
+21973106	Planejada		SIGCX - Open Finance (Fase 3) - Estudo para implementação da Iniciação de pagamento
+21120383	Desejável		SIGCX - Envio de dados ao SIAAF - Multas com Barras
+21480646	Desejável		SIGCX - Envio de dados ao SIAAF - GPS - Guia de Previdência Social - com Código de barras
+21447154	Desejável		SIGCX - Envio de dados ao SIAAF - GPS sem barras
+21480646	Desejável	8	SIGCX - Envio de dados ao SIAAF - GPS - Guia de Previdência Social - com Código de barras
+21774852	Desejável	8	SIGCX - NSGD - Transações em lote - TED CONTA PAGAMENTO
+21764082	Desejável	5	SIGCX - Comprovantes de PIX FGTS realizado via SIACC
+
+
+
+
+squad 3
+
+20403909			SIGCX - Pix - Trazer lista de bancos mais populares no Pix com dados bancários
+21906230			Pix recentes
+21799930			SIGCX - Envio de TED - Legado e Novo Layout - Incluir Principais bancos no inicio da lista de bancos
+21935616			SIGCX - Procuração - Refresh da situação da Senha de Transação
+21960046			SIGCX - Alterar Celular cadastrado no serviço de SMS
+21959986			SIGCX  - Movimento Diário - Alterar Gravação SIMCV
+21959937			SIGCX - Gravação de Consulta ao Extrato Por Periodo no SIMCV
+21959923			SIGCX - Abertura de Conta Salário em Lote - Ajuste de Passo a Passo
+21960924			SIGCX - Extrato Histórico com pesquisa por periodo nos últimos 12 meses
+21961988			SIGCX - NSGD - Transações em Lote - Envio de TEV para contas com poupança integrada
+21970029			SIGCX - Gestão de Limite Encadeado QRCODE Pix
