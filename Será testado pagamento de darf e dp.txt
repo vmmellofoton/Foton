@@ -1,0 +1,3 @@
+Será testado pagamento de darf e dpvat com cod barras
+Temos massa para dpvat com valores abaixo e acima de R$ 200,00
+Para darf as massas estão desatualizadas
