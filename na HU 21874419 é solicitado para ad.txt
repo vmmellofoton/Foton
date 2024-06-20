@@ -1,0 +1,1 @@
+na HU 21874419 é solicitado para adição do botão retornado pelo fluxo do barra unica, porém quando iniciado o pagamento pelo fluxo normal esse botão não aparece, consegue confirmar com a equipe caixa se deve manter esse comportamento ou se deve exibir independente de onde inicializa o fluxo.
