@@ -1,0 +1,26 @@
+Squad 3
+
+21970029 SIGCX - Gestão de Limite Encadeado QRCODE Pix
+21997343 SIGCX - Gestão de Limite Encadeado Chave Pix
+21997371 SIGCX - Gestão de Limite Encadeado Dados Bancários Pix
+21997384 SIGCX - Comprovante de TEV no extrato histórico
+21997395 SIGCX - Comprovante Boleto no Extrato histórico
+21997397 SIGCX - Comprovante CSN no extrato Histórico 
+21960046 SIGCX - Alterar Celular cadastrado no serviço de SMS
+22003026 SIGCX - Download Painel de Contas - Resumo das Contas em CSV
+22003145 SIGCX - Download Painel de Contas - Saldo por grupo em CSV
+22003169 SIGCX - Download Painel de Contas - Saldo dos investimentos em CSV
+
+
+Squad 4
+
+21996414 SIGCX - Estudo para retirada do modulo siibc-Consulta Transações Agendadas
+22001441 SIGCX - Extrato 5 anos - Exportar PDF
+21996449 SIGCX - 1ª e 2ª Via de Comprovante - Boleto_PDF e impressão
+21988358 SIGCX - Procuração Eletrônica - Limpeza de CPF
+21998303 SIGCX - Procuração Eletrônica - Gerenciar permissões e acessos_ícone "lixeira"
+21979087 SIGCX - Procuração Eletrônica - Pendência de Verificação da Procuração
+22006017 SIGCX - Procuração Eletrônica - Gerenciar_Apelido da conta	
+22006721 SIGCX - Consulta/Cancelamento de agendamento - Pesquisar	
+27958036 SIGCX - Open Finance (Fase 3) - Iniciação de pagamentos_Seleção de conta	
+21956786 SIGCX - Open Finance (Fase 3) - Iniciação de pagamentos_Acesso		
