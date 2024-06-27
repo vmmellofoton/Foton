@@ -12,6 +12,9 @@ Squad 3
 22003169 SIGCX - Download Painel de Contas - Saldo dos investimentos em CSV
 
 
+https://teams.microsoft.com/l/meetup-join/19%3ameeting_Yjg2OTdjY2ItNDUzYS00MzFhLTgyYjEtZjQ0NzQ3YWM4MjVm%40thread.v2/0?context=%7b%22Tid%22%3a%22ab9bba98-684a-43fb-add8-9c2bebede229%22%2c%22Oid%22%3a%22f27b620b-5a34-400f-9799-571a123243ec%22%7d
+
+
 Squad 4
 
 21996414 SIGCX - Estudo para retirada do modulo siibc-Consulta Transações Agendadas
@@ -24,3 +27,6 @@ Squad 4
 22006721 SIGCX - Consulta/Cancelamento de agendamento - Pesquisar	
 27958036 SIGCX - Open Finance (Fase 3) - Iniciação de pagamentos_Seleção de conta	
 21956786 SIGCX - Open Finance (Fase 3) - Iniciação de pagamentos_Acesso		
+
+
+https://teams.microsoft.com/l/meetup-join/19%3ameeting_NmE0ZjkzMmUtNzk3Yy00ZDIxLWFmOWItODE2NmM0ZmViNmFk%40thread.v2/0?context=%7b%22Tid%22%3a%22ab9bba98-684a-43fb-add8-9c2bebede229%22%2c%22Oid%22%3a%22f27b620b-5a34-400f-9799-571a123243ec%22%7d
