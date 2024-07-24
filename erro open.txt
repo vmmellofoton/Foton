@@ -1,0 +1,8 @@
+Sobre transação múltipla. Consegue ver com o Marcio qual seria o passo-a-passo
+Pois no passo 7, da aprovação retorna isso:
+
+
+
+E se eu tento entrar na lista de pendencia antes e depois de executar o passo 7, não aparece a transação
+
+Oq indica que é necessário fazer alguma coisa para aprovar
