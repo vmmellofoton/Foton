@@ -1,0 +1,3 @@
+400  https://api.des.caixa:8443/transacoes-financeiras/pagamentos-instantaneos/v1/pagamentos/validar (535ms)
+{"nsu":13006334453,"codigoRetorno":"23","origemRetorno":"SIATR","mensagem":{"mensagemNegocial":"CONTA EM SITUACAO IMPEDITIVA                                                                       23","mensagemTecnica":"CONTA EM SITUACAO IMPEDITIVA                                                                       23"}}
+09:59:37,325 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-2) <-- END HTTP (322-byte body)
