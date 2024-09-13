@@ -1,0 +1,14 @@
+{"status":"REJECTED"}
+15:42:33,149 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-1) --> END PUT (21-byte body)
+15:42:37,891 DEBUG [br.gov.caixa.integrator.rest.AuditoriaInterceptor] (http-0.0.0.0:4080-1) Iniciando a auditoria.
+15:42:38,833 DEBUG [br.gov.caixa.integrator.rest.AuditoriaInterceptor] (http-0.0.0.0:4080-1) Fim da auditoria.
+15:42:38,833 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-1) <-- 400  https://api.des.caixa:8443/open-banking/gestao-pagamentos/v1/recurring-consents/urn:caixa-automatic:d94d9cf9-a149-47bc-bddb-ebd146511d0a (4657ms)
+15:42:38,833 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-1) Content-Type: application/json
+15:42:38,833 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-1) 
+15:42:38,833 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-1) {"errors":[{"code":"400","title":"Bad request","detail":"Falha ao realizar autoriza  o. Realize o pagamento novamente."}],"meta":{"totalRecords":1,"totalPages":1,"requestDateTime":"2024-09-13T18:42:37Z"}}
+15:42:38,833 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-1) <-- END HTTP (206-byte body)
+dados do consentimento
+
+urn:caixa-automatic:d94d9cf9-a149-47bc-bddb-ebd146511d0a&flowid=gN6cV8KJol&pf=Ae6azowXyed89XyU3AuiYM&journey=AUTOMATICPAYMENTS
+
+autorização continua ok
