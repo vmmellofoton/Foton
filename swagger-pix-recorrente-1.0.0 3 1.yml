@@ -1,0 +1,1235 @@
+---
+openapi: 3.0.3
+info:
+  title: PIX - Pagamentos recorrentes
+  description: API referentes os pagamentos recorrentes via PIX
+  contact:
+    name: SUDEB08
+    email: sudeb08@corp.caixa.gov.br
+  version: 1.0.0
+servers:
+- url: "https://api3.caixa:{port}/{basePath}"
+  description: Ambiente de Produção
+  variables:
+    port:
+      default: "8443"
+    basePath:
+      default: pix/recorrencia
+- url: "https://api.des.caixa:{port}/{basePath}"
+  description: Ambiente de Desenvolvimento
+  variables:
+    port:
+      default: "8443"
+    basePath:
+      default: pix/recorrencia
+tags:
+- name: Agendamentos recorrentes
+- name: Recorrência
+paths:
+  /v1/agendamentos/{idRecorrencia}:
+    get:
+      tags:
+      - Agendamentos recorrentes
+      summary: listarAgendamentosRecorrentes
+      description: |
+        Obtém uma lista dos agendamentos, de uma determinada recorrência, de acordo com os filtros passados.
+      parameters:
+      - name: idRecorrencia
+        in: path
+        description: Identificador único da recorrência
+        required: true
+        schema:
+          maxLength: 29
+      - name: limite
+        in: query
+        description: Quantidade de registros retornados por página
+        schema:
+          default: 10
+          maxLength: 50
+      - name: pagina
+        in: query
+        description: Pagina da listagem usada na paginação do resultado
+        schema:
+          default: 0
+      responses:
+        "400":
+          description: "Requisição inválida - A requisição não pôde ser processada\
+            \ devido a erros de sintaxe ou parâmetros inválidos. Por favor, verifique\
+            \ os dados enviados e tente novamente."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "401":
+          description: Não autorizado - A requisição requer credenciais de autenticação
+            válidas.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "403":
+          description: Acesso Negado - Você não tem permissão para acessar este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "500":
+          description: Erro interno do servidor - Ocorreu um erro inesperado no servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "200":
+          description: Lista dos agendamentos encontrados.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseListagemAgendamentosDto"
+        "404":
+          description: A recorrência não foi encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+      security:
+      - bearerAuth: []
+  /v1/agendamentos/{idRecorrencia}/cancelar:
+    post:
+      tags:
+      - Agendamentos recorrentes
+      summary: cancelarAgendamentoRecorrente
+      description: Cancela um agendamento de recorrência
+      parameters:
+      - name: idRecorrencia
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestCancelamentoAgendamentoDto"
+      responses:
+        "400":
+          description: A recorrência ou agendamento informado não foi encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "401":
+          description: Não autorizado - A requisição requer credenciais de autenticação
+            válidas.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "403":
+          description: Acesso Negado - Você não tem permissão para acessar este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "500":
+          description: Erro interno do servidor - Ocorreu um erro inesperado no servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "200":
+          description: Agendamento cancelado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseAgendamentoDto"
+      security:
+      - bearerAuth: []
+  /v1/agendamentos/{idRecorrencia}/{dataPagamento}:
+    get:
+      tags:
+      - Agendamentos recorrentes
+      summary: obterAgendamentoRecorrente
+      description: Obtem os detalhes de um agendamento
+      parameters:
+      - name: dataPagamento
+        in: path
+        description: Data do agendamento do pagamento. Formato yyyy-MM-dd
+        required: true
+        schema:
+          type: string
+      - name: idRecorrencia
+        in: path
+        description: Identificador único da recorrência
+        required: true
+        schema:
+          maxLength: 29
+      responses:
+        "400":
+          description: A recorrência ou agendamento informado não foi encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "401":
+          description: Não autorizado - A requisição requer credenciais de autenticação
+            válidas.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "403":
+          description: Acesso Negado - Você não tem permissão para acessar este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "500":
+          description: Erro interno do servidor - Ocorreu um erro inesperado no servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "200":
+          description: Agendamento retornado com sucesso.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseAgendamentoDto"
+      security:
+      - bearerAuth: []
+  /v1/recorrencias:
+    get:
+      tags:
+      - Recorrência
+      summary: listarRecorrencias
+      description: |
+        Obtém uma lista de recorrências de acordo com os filtros passados. <br><br>
+        É necessário que sejam informados alguma das combinações: <br>  <br>
+        <li>CPF ou CNPJ</li><br>
+        <li>agencia, numeroConta, operacao</li>
+      parameters:
+      - name: agencia
+        in: query
+        description: Agência da conta do cliente proprietário da recorrência
+        schema:
+          maxLength: 4
+          pattern: "^\\d{4}$"
+      - name: cnpj
+        in: query
+        description: CNPJ do cliente proprietário da recorrência
+        schema:
+          pattern: "^\\d{14}$"
+      - name: cpf
+        in: query
+        description: CPF do cliente proprietário da recorrência
+        schema:
+          pattern: "^\\d{11}$"
+      - name: limite
+        in: query
+        description: Quantidade de registros retornados por página
+        schema:
+          default: 10
+          maxLength: 50
+      - name: numeroConta
+        in: query
+        description: Número da conta do cliente proprietário da recorrência com digito
+          verificador
+        schema:
+          maxLength: 20
+          pattern: "^\\d{20}$"
+      - name: operacao
+        in: query
+        description: Operação da conta do cliente proprietário da recorrência
+        schema:
+          maxLength: 4
+          pattern: "^\\d{4}$"
+      - name: pagina
+        in: query
+        description: Pagina da listagem usada na paginação do resultado
+        schema:
+          default: 0
+      - name: situacao
+        in: query
+        description: Situação da recorrência
+        schema:
+          $ref: "#/components/schemas/SituacaoRecorrencia"
+      responses:
+        "400":
+          description: "Requisição inválida - A requisição não pôde ser processada\
+            \ devido a erros de sintaxe ou parâmetros inválidos. Por favor, verifique\
+            \ os dados enviados e tente novamente."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "401":
+          description: Não autorizado - A requisição requer credenciais de autenticação
+            válidas.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "403":
+          description: Acesso Negado - Você não tem permissão para acessar este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "500":
+          description: Erro interno do servidor - Ocorreu um erro inesperado no servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "200":
+          description: Lista das recorrências encontradas.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseListagemRecorrencia"
+      security:
+      - bearerAuth: []
+    post:
+      tags:
+      - Recorrência
+      summary: criarRecorrencia
+      description: Cria uma recorrência de pagamento Pix
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestCriacaoRecorrenciaDto"
+      responses:
+        "400":
+          description: "Requisição inválida - A requisição não pôde ser processada\
+            \ devido a erros de sintaxe ou parâmetros inválidos. Por favor, verifique\
+            \ os dados enviados e tente novamente."
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "401":
+          description: Não autorizado - A requisição requer credenciais de autenticação
+            válidas.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "403":
+          description: Acesso Negado - Você não tem permissão para acessar este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "500":
+          description: Erro interno do servidor - Ocorreu um erro inesperado no servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "200":
+          description: Recorrência cadastrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseRecorrenciaDto"
+      security:
+      - bearerAuth: []
+  /v1/recorrencias/{idRecorrencia}:
+    get:
+      tags:
+      - Recorrência
+      summary: obterRecorrencia
+      description: Obtém detalhes de uma recorrência
+      parameters:
+      - name: idRecorrencia
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: A recorrência informada não foi encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "401":
+          description: Não autorizado - A requisição requer credenciais de autenticação
+            válidas.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "403":
+          description: Acesso Negado - Você não tem permissão para acessar este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "500":
+          description: Erro interno do servidor - Ocorreu um erro inesperado no servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "200":
+          description: Recorrência retornada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseDetalheRecorrenciaDto"
+      security:
+      - bearerAuth: []
+    patch:
+      tags:
+      - Recorrência
+      summary: alterarRecorrencia
+      description: Altera uma recorrência
+      parameters:
+      - name: idRecorrencia
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestAlteracaoRecorrenciaDto"
+      responses:
+        "400":
+          description: A recorrência informada não foi encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "401":
+          description: Não autorizado - A requisição requer credenciais de autenticação
+            válidas.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "403":
+          description: Acesso Negado - Você não tem permissão para acessar este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "500":
+          description: Erro interno do servidor - Ocorreu um erro inesperado no servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "200":
+          description: Recorrência alterada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseRecorrenciaDto"
+      security:
+      - bearerAuth: []
+  /v1/recorrencias/{idRecorrencia}/cancelar:
+    post:
+      tags:
+      - Recorrência
+      summary: cancelarRecorrencia
+      description: Cancela uma recorrência e todos os seus agendamentos
+      parameters:
+      - name: idRecorrencia
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RequestCancelamentoRecorrenciaDto"
+      responses:
+        "400":
+          description: A recorrência informada não foi encontrada
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "401":
+          description: Não autorizado - A requisição requer credenciais de autenticação
+            válidas.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "403":
+          description: Acesso Negado - Você não tem permissão para acessar este recurso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "500":
+          description: Erro interno do servidor - Ocorreu um erro inesperado no servidor
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProblemDetail"
+        "200":
+          description: Recorrência cancelada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResponseRecorrenciaDto"
+      security:
+      - bearerAuth: []
+components:
+  schemas:
+    ContaPagador:
+      required:
+      - agencia
+      - numeroConta
+      - tipoConta
+      - ispb
+      type: object
+      properties:
+        agencia:
+          description: Agência da conta do cliente proprietário da recorrência
+          maxLength: 4
+          pattern: "^\\d{4}$"
+          type: string
+        numeroConta:
+          description: Número da conta do cliente proprietário da recorrência com
+            digito verificador
+          maxLength: 20
+          pattern: "^\\d{20}$"
+          type: string
+        operacao:
+          description: Operação da conta do cliente proprietário da recorrência. É
+            obrigatório para clientes Caixa
+          maxLength: 4
+          pattern: "^\\d{4}$"
+          type: string
+        tipoConta:
+          description: Tipo da conta do cliente
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/TipoConta"
+        ispb:
+          description: ISPB(PSP) do cliente. Geralmente os primeiros 8 dígitos do
+            CNPJ da instituição
+          maxLength: 8
+          type: string
+    ContaRecebedor:
+      required:
+      - agencia
+      - numeroConta
+      - tipoConta
+      - ispb
+      type: object
+      properties:
+        chave:
+          description: Chave PIX do cliente recebedor da recorrência. É obrigatório
+            caso a recorrência seja originada de uma chave PIX.
+          maxLength: 77
+          type: string
+        agencia:
+          description: Agência da conta do cliente recebedor da recorrência
+          maxLength: 4
+          pattern: "^\\d{4}$"
+          type: string
+        numeroConta:
+          description: Número da conta do cliente recebedor da recorrência com digito
+            verificador
+          maxLength: 20
+          pattern: "^\\d{20}$"
+          type: string
+        operacao:
+          description: Operação da conta do cliente recebedor da recorrência caso
+            o cliente seja Caixa
+          maxLength: 4
+          pattern: "^\\d{4}$"
+          type: string
+        tipoConta:
+          description: Tipo da conta do cliente
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/TipoConta"
+        ispb:
+          description: ISPB(PSP) do cliente recebedor. Geralmente os primeiros 8 dígitos
+            do CNPJ da instituição
+          maxLength: 8
+          type: string
+    Detail:
+      type: object
+      properties:
+        name:
+          type: string
+        message:
+          type: string
+    EnumFormaIniciacaoPagamento:
+      enum:
+      - MANUAL_SEM_CHAVE
+      - MANUAL_COM_CHAVE
+      - QR_CODE_ESTATICO
+      - QR_CODE_DINAMICO
+      - QR_CODE_DINAMICO_PIX_COBRANCA
+      - INIC
+      type: string
+    Frequencia:
+      enum:
+      - SEMANAL
+      - QUINZENAL
+      - MENSAL
+      - ANUAL
+      type: string
+    MotivoCancelamentoRecorrencia:
+      enum:
+      - PEDIDO_USUARIO
+      - FRAUDE
+      - FALECIMENTO
+      - CONTA_ENCERRADA
+      type: string
+    OffsetDateTime:
+      format: date-time
+      type: string
+      example: 2022-03-10T12:15:50-04:00
+    Paginacao:
+      type: object
+      properties:
+        total:
+          format: int32
+          description: A quantidade de registros total do filtro
+          type: integer
+        pagina:
+          format: int32
+          description: A pagina atual do filtro
+          default: 0
+          type: integer
+        limite:
+          format: int32
+          description: A quantidade de registros solicitados na paginação
+          default: 10
+          maxLength: 50
+          type: integer
+    ProblemDetail:
+      type: object
+      properties:
+        type:
+          type: string
+        status:
+          format: int32
+          type: integer
+        timestamp:
+          $ref: "#/components/schemas/OffsetDateTime"
+        title:
+          type: string
+        detail:
+          type: string
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/Detail"
+        correlationId:
+          type: string
+    RequestAlteracaoRecorrenciaDto:
+      type: object
+      properties:
+        valor:
+          description: Valor em Reais (BRL) referente ao pagamento instantâneo.
+          pattern: "\\d{1,10}\\.\\d{2}"
+          type: string
+        quantidadeParcelas:
+          format: int32
+          description: Quantidade de parcelas da recorrência
+          type: integer
+        dataInicial:
+          description: Data início da recorrência. Formatado yyyy-MM-dd. Não pode
+            ser anterior a data inicial previamente cadastrada
+          type: string
+    RequestCancelamentoAgendamentoDto:
+      required:
+      - motivo
+      - numeroParcela
+      type: object
+      properties:
+        motivo:
+          description: Motivo do cancelamento da recorrência
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/MotivoCancelamentoRecorrencia"
+        numeroParcela:
+          format: int32
+          description: Número da parcela que deseja cancelar
+          type: integer
+    RequestCancelamentoRecorrenciaDto:
+      required:
+      - motivo
+      type: object
+      properties:
+        motivo:
+          description: Motivo do cancelamento da recorrência
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/MotivoCancelamentoRecorrencia"
+    RequestCriacaoRecorrenciaDto:
+      required:
+      - valor
+      - quantidadeParcelas
+      - frequencia
+      - descricao
+      - dataInicial
+      - canal
+      - usuarioPagador
+      - usuarioRecebedor
+      - formaIniciacaoPagamento
+      - tipoAutenticacao
+      - siaafDto
+      type: object
+      properties:
+        valor:
+          description: Valor em Reais (BRL) referente ao pagamento instantâneo.
+          pattern: "\\d{1,10}\\.\\d{2}"
+          type: string
+        quantidadeParcelas:
+          format: int32
+          description: Quantidade de parcelas da recorrência
+          type: integer
+        frequencia:
+          description: Qual a frequência que o pagamento será feito
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/Frequencia"
+        descricao:
+          description: Descrição da recorrência cadastrada
+          maxLength: 35
+          type: string
+        informacoesEntreClientes:
+          description: Descrição que será enviada no Pix no dia da liquidação
+          maxLength: 140
+          type: string
+        dataInicial:
+          description: Data início da recorrência. Formatado yyyy-MM-dd
+          type: string
+        canal:
+          description: Sigla do canal que originou a transação
+          type: string
+        usuarioPagador:
+          description: Dados do cliente pagador da recorrência
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/UsuarioPagadorDto"
+        usuarioRecebedor:
+          description: Dados do cliente recebedor da recorrência
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/UsuarioRecebedorDto"
+        formaIniciacaoPagamento:
+          description: Forma de iniciação da recorrência.
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/EnumFormaIniciacaoPagamento"
+        tipoAutenticacao:
+          description: Tipo de autenticação.
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/TipoAutenticacao"
+        cnpjIniciador:
+          description: CNPJ do iniciador da recorrëncia.
+          type: string
+        txId:
+          description: Identificador da transação. Utilizado quando o processo iniciar
+            por um QR Code
+          maxLength: 35
+          type: string
+        siaafDto:
+          description: Atributo que armazena as informações do Siaaf
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/SiaafDto"
+    ResponseAgendamentoDto:
+      required:
+      - idRecorrencia
+      - ultimaAtualizacao
+      - dataCriacao
+      - dataAgendamentoPagamento
+      - numeroParecela
+      - situacao
+      type: object
+      properties:
+        idRecorrencia:
+          description: Identificador único da recorrência.
+          maxLength: 29
+          type: string
+        ultimaAtualizacao:
+          description: A data da última modificação do agendamento. Formatação da
+            data yyyy-MM-dd'T'HH:mm:ss (horário de Brasília)
+          type: string
+          example: 2022-01-17T10:00:00
+        dataCriacao:
+          description: Data que o agendamento foi criado. Formatação da data yyyy-MM-dd'T'HH:mm:ss
+            (horário de Brasília)
+          type: string
+          example: 2022-01-12T15:10:00
+        dataAgendamentoPagamento:
+          description: Data que o pagamento está agendado para ocorrer. Formatação
+            da data yyyy-MM-dd
+          type: string
+          example: 2022-02-01
+        motivoCancelamento:
+          description: Motivo do cancelamento do agendamento
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/MotivoCancelamentoRecorrencia"
+        dataCancelamento:
+          description: Data que o agendamento foi criado. Formatação da data yyyy-MM-dd'T'HH:mm:ss
+            (horário de Brasília)
+          type: string
+          example: 2022-01-17T10:00:00
+        idFimAFim:
+          description: Identificador único do pagamento PIX vinculado ao agendamento
+          maxLength: 32
+          type: string
+        numeroParecela:
+          description: Número da parcela da recorrência
+          type: string
+        situacao:
+          description: Situação do agendamento
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/SituacaoAgendamento"
+    ResponseDetalheRecorrenciaDto:
+      required:
+      - idRecorrencia
+      - dataCriacao
+      - ultimaAtualizacao
+      - valor
+      - quantidadeParcelas
+      - frequencia
+      - descricao
+      - dataInicial
+      - dataFim
+      - canal
+      - situacao
+      - usuarioPagador
+      - usuarioRecebedor
+      type: object
+      properties:
+        idRecorrencia:
+          description: Identificador único da recorrência.
+          maxLength: 29
+          type: string
+        dataCriacao:
+          description: Data que a recorrência foi criada. Formatação da data yyyy-MM-dd'T'HH:mm:ss
+            (horário de Brasília)
+          type: string
+          example: 2022-01-12T15:10:00
+        ultimaAtualizacao:
+          description: A data da última modificação da recorrência. Formatação da
+            data yyyy-MM-dd'T'HH:mm:ss (horário de Brasília)
+          type: string
+          example: 2022-01-17T10:00:00
+        valor:
+          description: Valor em Reais (BRL) referente ao pagamento instantâneo.
+          pattern: "\\d{1,10}\\.\\d{2}"
+          type: string
+        quantidadeParcelas:
+          format: int32
+          description: Quantidade de parcelas da recorrência
+          type: integer
+        frequencia:
+          description: Qual a frequência que o pagamento será feito
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/Frequencia"
+        descricao:
+          description: Descrição da recorrência cadastrada
+          maxLength: 35
+          type: string
+        informacoesEntreClientes:
+          description: Descrição que será enviada no Pix no dia da liquidação
+          maxLength: 140
+          type: string
+        dataInicial:
+          description: Data início da recorrência. Formato yyyy-MM-dd
+          type: string
+        dataFim:
+          description: Data fim da recorrência. Formato yyyy-MM-dd
+          type: string
+        canal:
+          description: Sigla do canal que originou a transação
+          type: string
+        situacao:
+          description: Situação da recorrência
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/SituacaoRecorrencia"
+        usuarioPagador:
+          description: Dados do cliente pagador da recorrência
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/UsuarioPagadorDto"
+        usuarioRecebedor:
+          description: Dados do cliente recebedor da recorrência
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/UsuarioRecebedorDto"
+        parcelaMinimaAlteracao:
+          format: int32
+          description: A quantidade minima de parcelas que a ocorrência pode ser alterada.
+            <br/> <br/> Caso o usuário deseje alterar a quantidade de parcelas da
+            recorrência esse o menor número permitido.
+          type: integer
+    ResponseListagemAgendamentosDto:
+      type: object
+      properties:
+        registros:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResponseAgendamentoDto"
+        paginacao:
+          $ref: "#/components/schemas/Paginacao"
+    ResponseListagemRecorrencia:
+      type: object
+      properties:
+        registros:
+          type: array
+          items:
+            $ref: "#/components/schemas/ResponseRecorrenciaDto"
+        paginacao:
+          $ref: "#/components/schemas/Paginacao"
+    ResponseRecorrenciaDto:
+      required:
+      - idRecorrencia
+      - dataCriacao
+      - ultimaAtualizacao
+      - valor
+      - quantidadeParcelas
+      - frequencia
+      - descricao
+      - dataInicial
+      - dataFim
+      - canal
+      - situacao
+      - usuarioPagador
+      - usuarioRecebedor
+      type: object
+      properties:
+        idRecorrencia:
+          description: Identificador único da recorrência.
+          maxLength: 29
+          type: string
+        dataCriacao:
+          description: Data que a recorrência foi criada. Formatação da data yyyy-MM-dd'T'HH:mm:ss
+            (horário de Brasília)
+          type: string
+          example: 2022-01-12T15:10:00
+        ultimaAtualizacao:
+          description: A data da última modificação da recorrência. Formatação da
+            data yyyy-MM-dd'T'HH:mm:ss (horário de Brasília)
+          type: string
+          example: 2022-01-17T10:00:00
+        valor:
+          description: Valor em Reais (BRL) referente ao pagamento instantâneo.
+          pattern: "\\d{1,10}\\.\\d{2}"
+          type: string
+        quantidadeParcelas:
+          format: int32
+          description: Quantidade de parcelas da recorrência
+          type: integer
+        frequencia:
+          description: Qual a frequência que o pagamento será feito
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/Frequencia"
+        descricao:
+          description: Descrição da recorrência cadastrada
+          maxLength: 35
+          type: string
+        informacoesEntreClientes:
+          description: Descrição que será enviada no Pix no dia da liquidação
+          maxLength: 140
+          type: string
+        dataInicial:
+          description: Data início da recorrência. Formato yyyy-MM-dd
+          type: string
+        dataFim:
+          description: Data fim da recorrência. Formato yyyy-MM-dd
+          type: string
+        canal:
+          description: Sigla do canal que originou a transação
+          type: string
+        situacao:
+          description: Situação da recorrência
+          type: string
+          allOf:
+          - $ref: "#/components/schemas/SituacaoRecorrencia"
+        usuarioPagador:
+          description: Dados do cliente pagador da recorrência
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/UsuarioPagadorDto"
+        usuarioRecebedor:
+          description: Dados do cliente recebedor da recorrência
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/UsuarioRecebedorDto"
+    SiaafDto:
+      title: Dados do Siaaf
+      description: Objeto contendo os dados prevenção de fraude do BACEN.
+      type: object
+      properties:
+        idContaTransacional:
+          title: Deve ser preenchido com a chave de endereçamento (proxy).
+          type: string
+        titularidade:
+          title: Titularidade da conta
+          type: string
+          example: "1, 2, 3, 4."
+        categoriaConta:
+          title: Define a categoria de contas
+          type: string
+          example: "\"SIDEC\", \"NSGD\", \"SICES\""
+        idConciliacaoRecebedor:
+          title: Identificação única da transação. É um campo opcional preenchido
+            com o número criado e informado pelo QR Code dinâmico. É usado para que
+            o PSP recebedor possa conciliar o pagamento recebido com o QR Code gerado.
+          type: string
+        jurosMulta:
+          title: Dados derivados do QRCode/Valor original do documento.
+          type: string
+        descontoAbatimento:
+          title: Dados derivados do QRCode/Descontos ou abatimentos aplicados à cobrança.
+          type: string
+        dataVencimentoPagamento:
+          title: Dados derivados do QRCode/Data de vencimento.
+          type: string
+        detalhesPagamento:
+          title: Dados derivados do QRCode/Informações adicionais.
+          type: string
+        tempoExpiracaoQrCode:
+          title: Dados derivados do QRCode/Tempo de expiração do QR Code.
+          type: string
+        pointInitiationMethod:
+          title: '"11" (QR reutilizável) ou "12" (QR utilizável apenas uma vez)'
+          type: string
+        merchantAccountInformation:
+          title: valor/chaves de endereçamento
+          type: string
+        merchantName:
+          title: Nome do estabelecimento
+          type: string
+        merchantCategoryCode:
+          title: Categoria do estabelecimento
+          type: string
+        merchantCity:
+          title: Cidade do estabelecimento
+          type: string
+        countryCode:
+          title: País do estabelecimento
+          type: string
+        finalidade:
+          title: Finalidade/Motivo da transferência (se aplicável)
+          type: string
+        identificacao:
+          title: Comentário caixa de texto livre do usuário (se aplicável)
+          type: string
+        codigoResposta:
+          title: "Código de resposta do autorizador, quando aplicável"
+          type: string
+          example: " \"00\", \"IP\", \"X5\", etc."
+        codigoAcesso:
+          title: Nivel de vinculação de dispositivo SISET
+          type: string
+          example: " 00, 10, 12, 20, 30"
+        ipDispositivo:
+          title: IP do dispositivo de origem da transação (desktop/celular (mobile
+            banking e whatsapp)). O campo deve estar apto a receber IPv6
+          type: string
+        portaDispositivo:
+          title: Porta de conexão do dispositivo
+          type: string
+          example: "8080, 1420"
+        idMobileFirst:
+          title: ID do dispositivo no Mobile First/SIPER
+          type: string
+        latitude:
+          title: Geolocalização do dispositivo
+          type: string
+        longitude:
+          title: Geolocalização do dispositivo
+          type: string
+        precisao:
+          title: Precisão da geolocalização
+          type: string
+        timeStampGeo:
+          title: Timestamp da geolocalização/quantidade de milisegundos desde 01/01/1970
+          type: string
+        sistOperacionalDispositivo:
+          title: "Sistema operacional dispositivo: ANDROID, IOS, WINDOWS"
+          type: string
+        sistOperacionalVersao:
+          title: "Sistema operacional - versão: 13, 12, 1.5, 2.01"
+          type: string
+        tipoDeDispositivo:
+          title: "Tipo de dispositivo: IOS IPHONE, DESKTOP, ANDROID PHONE"
+          type: string
+        aplicativoVersao:
+          title: "Aplicativo - versão: 3.4.17, 1.29.2"
+          type: string
+        tipoDeAutenticacao:
+          title: "Tipo de autenticação da transação: 1 - IP Silábica, 2 - Senha numé\
+            rica SIRAN, 3 - Biometria, 4 - Senha SSO, 5 - Assinatura Eletrônica Simples,\
+            \ 6 - Assinatura Eletrônica Múltipla, 7 - Assinatura Eletrônica Simples\
+            \ Mobile Forte, 8 - Assinatura Eletrônica Múltipla Mobile Forte, 9 - Outra"
+          type: string
+        vm:
+          title: Informação sobre emulação/execução em máquina virtual do aplicativo
+            fornecida pelo plugin de segurança
+          type: string
+        root:
+          title: Informação sobre privilégios administrativos do dispositivo fornecida
+            pelo plugin de segurança
+          type: string
+        nuCartao:
+          title: Número do cartão utilizado na operação
+          type: string
+          example: ' 6036890000123456789'
+        agenciaVinculacaoTerminal:
+          title: número da agência de vinculação do terminal físico (ATM/CCA/Lotérico/SISAG)
+          type: string
+          example: "2403"
+        nuATM:
+          title: "Número do ATM: 24031001"
+          type: string
+        nuConveniado:
+          title: Número do conveniado lotérico/Caixa Aqui
+          type: string
+          example: ' 00012193-2'
+        nuTerminalLoterico:
+          title: Número do terminal lotérico/Caixa Aqui
+          type: string
+          example: ' 00025360'
+        nuOperadorTerminal:
+          title: Identificação do operador do terminal Lotérico/ Caixa Aqui
+          type: string
+          example: ' 00012336'
+        nuEstacaoFinanceiraOperacional:
+          title: Identificação da estação financeira
+          type: string
+          example: DF2403EF000
+        ipURA:
+          title: "Formato IP seguido de um numero para identificar a instância, cada\
+            \ servidor de URA tem 2 instâncas para rodar a aplicação"
+          type: string
+        mdcu:
+          title: Identifica o endereçamento do serviço de telefonia
+          type: string
+        nuTelefone:
+          title: Número do telefone operando o Whatsapp ou a URA
+          type: string
+          example: "+5561900000000"
+        nuOperadorEstacaoFinanceiraOperacional:
+          title: Número (matrícula) do operador da estação financeira
+          type: string
+          example: '"C000000"'
+        nuAutorizadorEstacaoFinanceiraOperacional:
+          title: Número (matrícula) do autorizador da operação na estação financeira
+          type: string
+          example: '"C000000"'
+        clientIdCanalOrigem:
+          title: Número (matrícula) do autorizador da operação na estação financeira
+          type: string
+          example: '"C000000"'
+    SituacaoAgendamento:
+      enum:
+      - AGENDAMENTO_RECEBIDO
+      - AGENDAMENTO_VALIDADO
+      - AGENDAMENTO_ENVIADO
+      - AGENDAMENTO_REGISTRADO
+      - AGENDAMENTO_CONFIRMADO
+      - AGENDAMENTO_EFETIVADO
+      - AGENDAMENTO_CANCELADO
+      - AGENDAMENTO_REJEITADO
+      - PAGAMENTO_INICIADO
+      - PAGAMENTO_EFETIVADO
+      - PAGAMENTO_RETENTATIVA
+      - PAGAMENTO_REJEITADO
+      - PAGAMENTO_NOTIFICADO
+      - PAGAMENTO_FINALIZADO
+      type: string
+    SituacaoRecorrencia:
+      enum:
+      - ATIVA
+      - INATIVA
+      type: string
+    TipoAutenticacao:
+      enum:
+      - SIMPLES
+      - CERTIFICADO_DIGITAL
+      - QRCODE
+      - MOBILE_FORTE
+      - ASSINATURA_MULTIPLA
+      type: string
+    TipoConta:
+      enum:
+      - CACC
+      - SLRY
+      - SVGS
+      - TRAN
+      type: string
+    UsuarioPagadorDto:
+      required:
+      - nome
+      - conta
+      type: object
+      properties:
+        nome:
+          description: Nome do cliente proprietário da recorrência
+          type: string
+        cpf:
+          description: CPF do cliente proprietário da recorrência
+          pattern: "^\\d{11}$"
+          type: string
+        cnpj:
+          description: CNPJ do cliente proprietário da recorrência. O CNPJ será utilizado
+            com 14 dígitos (com dígitos verificadores). Informado sem pontos ou traços.
+          pattern: "^\\d{14}$"
+          type: string
+        conta:
+          description: Dados da conta do cliente
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ContaPagador"
+        codigoMunicipio:
+          description: Código IBGE do município do cliente
+          maxLength: 7
+          pattern: "^\\d{7}$"
+          type: string
+    UsuarioRecebedorDto:
+      required:
+      - nome
+      - conta
+      type: object
+      properties:
+        nome:
+          description: Nome do cliente recebedor do pagamento da recorrência
+          type: string
+        cpf:
+          description: CPF do cliente recebedor da recorrência
+          pattern: "^\\d{11}$"
+          type: string
+        cnpj:
+          description: CNPJ do cliente recebedor da recorrência. O CNPJ será utilizado
+            com 14 dígitos (com dígitos verificadores). Informado sem pontos ou traços.
+          pattern: "^\\d{14}$"
+          type: string
+        conta:
+          description: Dados da conta do cliente
+          type: object
+          allOf:
+          - $ref: "#/components/schemas/ContaRecebedor"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
