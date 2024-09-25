@@ -1,0 +1,13 @@
+11:46:48,446 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-4) --> POST https://api.des.caixa:8443/transacoes-financeiras/pagamentos-instantaneos/v1/pagamentos/validar http/1.1
+11:46:48,446 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-4) Content-Type: application/json; charset=UTF-8
+11:46:48,446 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-4) Content-Length: 542
+11:46:48,446 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-4) 
+11:46:48,446 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-4) {"dataEfetivacao":"2024-09-25","finalidadeTransacao":"IPAY","formaIniciacaoPagamento":"MANUAL_COM_CHAVE","idFimAFim":"E0036030520240925144691be4041fb9","usuarioPagador":{"cnpj":"43776517000180","conta":{"agencia":"0334","dv":"4","numeroConta":"000596771945","produto":"2200"},"cpf":"99335107115"},"usuarioRecebedor":{"cnpj":"12299501000108","conta":{"agencia":"1679","chave":"32c0722f-cf96-4109-a1fd-aa34996d8c98","dv":"3","ispb":"00360305","numeroConta":"000000000132907","produto":"0003","tipoChave":"EVP","tipoConta":"CACC"}},"valor":30.0}
+11:46:48,446 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-4) --> END POST (542-byte body)
+11:46:49,037 DEBUG [br.gov.caixa.integrator.rest.AuditoriaInterceptor] (http-0.0.0.0:4080-4) Iniciando a auditoria.
+11:46:49,748 DEBUG [br.gov.caixa.integrator.rest.AuditoriaInterceptor] (http-0.0.0.0:4080-4) Fim da auditoria.
+11:46:49,748 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-4) <-- 400  https://api.des.caixa:8443/transacoes-financeiras/pagamentos-instantaneos/v1/pagamentos/validar (588ms)
+11:46:49,748 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-4) Content-Type: application/json
+11:46:49,748 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-4) 
+11:46:49,748 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-4) {"nsu":13007231274,"codigoRetorno":"71","origemRetorno":"SIATR","mensagem":{"mensagemNegocial":"FALHA NA VALIDACAO DO LIMITE                                                                       99","mensagemTecnica":"FALHA NA VALIDACAO DO LIMITE                                                                       99"}}
+11:46:49,748 INFO  [br.gov.caixa.integrator.rest.RestServiceImpl] (http-0.0.0.0:4080-4) <-- END HTTP (322-byte body)
