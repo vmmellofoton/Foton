@@ -1,0 +1,31 @@
+(Frase utilizada para o pagamento imediato)
+Frase: Detalhes da pendência de Pix Open Finance
+
+****(Transferencia Inteligente)
+Frase: Detalhes da pendência de transferência Open Finance
+
+
+(Antes)
+Frase: Autorização para transferência inteligente concluída!
+
+****(Depois - Figma)
+Frase: Autorização de transferência inteligente Open Finance
+
+
+Cenário 2.1 - Erro - Senha de Transação equivocada
+
+DADO QUE o cliente acessa via chamada do Open Finance
+QUANDO valida os dados da Transferência Inteligente, incluiu a sua senha de transação errada e seleciona o botão Autorizar.
+ENTÃO o Gerenciador apresenta mensagem de erro e possibilita nova tentativa de inclusão de senha (3 tentativas).
+
+Mensagem: X5 - OPS! A SENHA DE TRANSAÇÃO INCORRETA. CONFIRME SE A SENHA QUE VOCÊ DIGITOU É A DA CONTA QUE ESTÁ UTILIZANDO E TENTE NOVAMENTE.
+
+****(Exibido dentro da modal conforme figma)
+Senha de transação incorreta
+
+****(Cenario nao previsto para STM)
+31101 - Open Banking - Autoriza Consentimento (erro: mensagem de erro da API ou sucesso: tipo de transação)
+(Para assinatura multipla o primeiro usuario esta fazendo a inclusao da pendencia 28153 e para os demais, estarao fazendo a autorização da pendencia 28154)
+
+****(Cenário previsto para primeiro assinante, os demais dentro da pendencia criada fará o cancelamento da pendencia 28198)
+31102 - Open Banking - Recusa Consentimento (erro: mensagem de erro da API ou sucesso: tipo de transação)
