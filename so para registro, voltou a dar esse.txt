@@ -1,0 +1,5 @@
+so para registro, voltou a dar esse erro para STM imediato
+
+{"header": {"kid":"I70BgwUr0S1aCJIoTHYMhmic-Lc7XxAMqGTcWh7pc6c","typ":"JWT","alg":"PS256"}, "payload": {"errors":[{"code":"CONSENTIMENTO_PENDENTE_AUTORIZACAO","title":"Consentimento pendente de autorizacação","detail":"Consentimento pendente de autorizacação."}],"meta":{"requestDateTime":"2024-10-04T14:53:50Z"},"aud":"c160a6f5-e5df-5067-9e97-ec6fba62fd87","iat":1728064430,"iss":"c160a6f5-e5df-5067-9e97-ec6fba62fd87","jti":"33165f24-df88-46b8-a573-693cdfee508d"}}
+
+STS imediato foi ok, todos os assinantes autorizaram, mas o open nao reconhece a finalizacao da pendencia
