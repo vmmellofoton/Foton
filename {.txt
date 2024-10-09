@@ -1,0 +1,57 @@
+{
+    "header": {
+        "alg": "PS256",
+        "kid": "I70BgwUr0S1aCJIoTHYMhmic-Lc7XxAMqGTcWh7pc6c",
+        "typ": "JWT"
+    },
+    "payload": {
+        "aud": "c160a6f5-e5df-5067-9e97-ec6fba62fd87",
+        "data": {
+            "cnpjInitiator": "59456277000176",
+            "consentId": "urn:caixa:46d2de35-ff7f-48b8-aa5a-cb8076ddc29b",
+            "creationDateTime": "2024-10-09T12:46:19Z",
+            "creditorAccount": {
+                "accountType": "CACC",
+                "ispb": "00360305",
+                "issuer": "1679",
+                "number": "00030000000600000133"
+            },
+            "debtorAccount": {
+                "accountType": "CACC",
+                "ispb": "00360305",
+                "issuer": "1679",
+                "number": "0004002357235"
+            },
+            "endToEndId": "E0036030520241010150085587df8130",
+            "ibgeTownCode": "5300108",
+            "localInstrument": "DICT",
+            "payment": {
+                "amount": "25.00",
+                "currency": "BRL"
+            },
+            "paymentId": "e4a12a37-1d48-4f2e-bff9-b1710ab63f03",
+            "proxy": "46039540000180",
+            "rejectionReason": {
+                "code": "FALHA_INFRAESTRUTURA_DETENTORA",
+                "detail": "Não foi possível validar a chave pix"
+            },
+            "remittanceInformation": "Pagamento diário Open Finance.",
+            "status": "RJCT",
+            "statusUpdateDateTime": "2024-10-09T12:46:19Z"
+        },
+        "iat": 1728477986,
+        "iss": "c160a6f5-e5df-5067-9e97-ec6fba62fd87",
+        "jti": "fe2f8c89-8ca5-4496-840f-b6703831a671",
+        "links": {
+            "self": "https://apim-ob-dev.azure-api.net/open-banking/payments/v4/pix/payments/e4a12a37-1d48-4f2e-bff9-b1710ab63f03"
+        },
+        "meta": {
+            "requestDateTime": "2024-10-09T12:46:26Z"
+        }
+    }
+}
+
+
+Vinicius passa o log para o Italo pfv para ele ver com o starlone a questao dos meninos que estao impedidos.
+Eu tentei por aqui com minha massa para ver se dava certo e ter a certeza que nao era com a massa deles.
+Eu consegui ir ate o final mas a msgm de erro aponta diretamente para infra da detentora
