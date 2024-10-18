@@ -1,0 +1,4 @@
+Rodrigo, o Anderson informou que foi verificado e as branchs estao ok na instancia01. Você precisa fazer a parametrização do link no menu.
+"dashboard/open-finance/movimentacoes-automaticas"
+
+E sobre a demanda 22144591 - Não será possível redirecionar pois quando o tempo limite é atingido ele ja muda o status, com isso ele nao consegue realizar nova chamada a api para ter o retorno de url. Segundo o Cazano, isso foi falado em daily, mas o Anderson pediu para ele adicionar la no GID a explicação.
