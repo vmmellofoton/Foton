@@ -1,0 +1,11 @@
+Em relação as HU's : 22411233, 224112652, 22411222. Temos o seguinte critério de aceite: 
+04 - Serviço é outorgável.
+
+Neste caso não temos muita explicação em relação a como seria esse controle (se haveria um controle de acesso e  se sim qual seria o código siper do serviço). Visto que o end-point original nunca houve esse controle... Inclusive no swagger das api's novas do coorporativo tem algumas menssagens de retorno relacionada com bloqueio de acesso: 
+
+403 - Não autorizado para acessar este recurso.
+401 - Autorização inválida para acessar este recurso. 
+
+Mas o bloqueio não ocorre (bloqueamos todos os acessos, liberando apenas folha caixa e o usuário conseguiu ter acesso as informações).
+
+Para validar isso precisamos ver se existe algum código siper para o serviço.
