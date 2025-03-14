@@ -1,0 +1,2074 @@
+---
+openapi: 3.0.3
+info:
+  title: 'SIACC - PIX Automático '
+  description: "Modelo padrÃ£o de pagamento PIX AutomÃ¡tico. Application: SIACC-PIX-API.\
+    \ Base path: /siacc-api/"
+  contact:
+    name: contato
+    email: contato@caixa.gov.br
+  version: 1.0.0-SNAPSHOT
+tags:
+- name: API Campanha
+  description: Interface de campanhas
+- name: API Cliente
+  description: Consultar dados básicos do cliente
+- name: API Contrato
+  description: Interface para gerir Contratos
+- name: API Convênio
+  description: Interface para gerir convênios
+- name: API Detalhar Convênio
+  description: Detalha Convênio
+- name: API Empregado
+  description: Consultar dados básicos do empregado CAIXA
+- name: API Parâmetros
+  description: Interface de parâmetros de convênio
+- name: API Pre request do Convênio
+  description: Interface retornar uma response com dados previos a serem consumidos
+    pela inclusão do Convênio
+- name: API Situação
+  description: Interface de situações de convênio
+- name: API Unidade
+  description: Consultar nome da unidade informada
+paths:
+  /:
+    options:
+      tags:
+      - API
+      summary: Disponibilidade
+      description: Indicador de situação do serviço
+      responses:
+        "200":
+          description: Serviço ativo e funcional
+        "503":
+          description: Serviço temporariamente indisponível
+  /campanha:
+    get:
+      tags:
+      - API Campanha
+      summary: Lista campanhas
+      description: Listar Campanhas disponíveis
+      responses:
+        "400":
+          description: Requisição recebida não é válida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "401":
+          description: Não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "403":
+          description: Token inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "404":
+          description: Requisição não retornou dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "500":
+          description: No momento não foi possível processar sua requisição
+        "503":
+          description: No momento não foi possível processar sua requisição
+        "200":
+          description: Requisição processada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CampanhaDTO'
+      security:
+      - SSO TOKEN: []
+      - LOGIN: []
+      - LOGIN: []
+  /chavePix/chavePix:
+    post:
+      tags:
+      - API
+      summary: Busca Chave Pix
+      description: Informe o cnpj para buscar todas chaves pix
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+      responses:
+        "201":
+          description: Requisição processada com sucesso
+  /cliente/{cpf}:
+    get:
+      tags:
+      - API Cliente
+      summary: API Cliente
+      description: Consultar dados básicos do cliente pelo CPF
+      parameters:
+      - name: cpf
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Requisição recebida não é válida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "401":
+          description: Não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "403":
+          description: Token inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "404":
+          description: Requisição não retornou dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "500":
+          description: No momento não foi possível processar sua requisição
+        "503":
+          description: No momento não foi possível processar sua requisição
+      security:
+      - SSO TOKEN: []
+      - LOGIN: []
+      - LOGIN: []
+  /contrato/download/{idContrato}:
+    get:
+      tags:
+      - API Contrato
+      summary: Download
+      description: Efetua o download do documento selecionado
+      parameters:
+      - name: idContrato
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Requisição recebida não é válida
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "401":
+          description: Não autenticado
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "403":
+          description: Token inválido
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "404":
+          description: Requisição não retornou dados
+          content:
+            application/octet-stream:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "500":
+          description: No momento não foi possível processar sua requisição
+        "503":
+          description: No momento não foi possível processar sua requisição
+      security:
+      - SSO TOKEN: []
+      - LOGIN: []
+      - LOGIN: []
+  /contrato/gerarcontrato/{idConvenio}:
+    get:
+      tags:
+      - API Contrato
+      summary: Gerar contrato
+      description: Gerar contrato
+      parameters:
+      - name: idConvenio
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "400":
+          description: Requisição recebida não é válida
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "401":
+          description: Não autenticado
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "403":
+          description: Token inválido
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "404":
+          description: Requisição não retornou dados
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "500":
+          description: No momento não foi possível processar sua requisição
+        "503":
+          description: No momento não foi possível processar sua requisição
+        "200":
+          description: Requisição processada com sucesso
+          content:
+            text/plain:
+              schema:
+                type: string
+      security:
+      - SSO TOKEN: []
+      - LOGIN: []
+      - LOGIN: []
+  /convenio:
+    post:
+      tags:
+      - API Convênio
+      summary: Inclusão
+      description: Efetua a inclusão da Convênio
+      requestBody:
+        description: Selecione o arquivo a ser enviado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                apelidoConvenio:
+                  type: string
+                unidadeRelacionamento:
+                  format: int32
+                  type: integer
+                parametrosConvenio:
+                  $ref: '#/components/schemas/ParametrosConvenioDTO'
+                tarifaConvenio:
+                  $ref: '#/components/schemas/TarifaConvenioDTO'
+                dadosCadastraisConvenio:
+                  $ref: '#/components/schemas/DadosCadastraisConvenioDTO'
+                assinaturaParteConvenio:
+                  $ref: '#/components/schemas/AssinaturaParteConvenioDTO'
+            examples:
+              Convênio Tarifa Balcão:
+                $ref: /convenio_pixautomatico.json#/convenioBalcao
+              Convênio Tarifa Diferenciada:
+                $ref: /convenio_pixautomatico.json#/convenioDiferenciada
+              Convênio Tarifa Campanha:
+                $ref: /convenio_pixautomatico.json#/convenioCampanha
+        required: true
+      responses:
+        "400":
+          description: Requisição recebida não é válida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "401":
+          description: Não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "403":
+          description: Token inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "404":
+          description: Requisição não retornou dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "500":
+          description: No momento não foi possível processar sua requisição
+        "503":
+          description: No momento não foi possível processar sua requisição
+        "201":
+          description: Requisição processada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Convenio'
+      security:
+      - SSO TOKEN: []
+      - LOGIN: []
+      - LOGIN: []
+  /convenio/pre/incluir:
+    post:
+      tags:
+      - API Pre request do Convênio
+      summary: Pre Request Convênio
+      description: Response Request com dados previos a serem consumidos pela inclusão
+        do Convênio
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequestPreIncluirConvenioDTO'
+      responses:
+        "400":
+          description: Requisição recebida não é válida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "401":
+          description: Não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "403":
+          description: Token inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "404":
+          description: Requisição não retornou dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "500":
+          description: No momento não foi possível processar sua requisição
+        "503":
+          description: No momento não foi possível processar sua requisição
+        "201":
+          description: Requisição processada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponsePreIncluirConvenioDTO'
+      security:
+      - SSO TOKEN: []
+      - LOGIN: []
+      - LOGIN: []
+  /convenio/v2/consulta:
+    get:
+      tags:
+      - API Convênio
+      summary: Consulta V2 cliente/convenio
+      description: Consulta pelo o id/cnpj de um cliente/convênio cadastrado
+      parameters:
+      - name: cnpj
+        in: query
+        description: CNPJ do ClienteChavePixDTO
+        schema:
+          type: string
+        example: "00360305000104"
+      - name: numeroConvenio
+        in: query
+        description: Numero do Convênio
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "400":
+          description: Requisição recebida não é válida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "401":
+          description: Não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "403":
+          description: Token inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "404":
+          description: Requisição não retornou dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "500":
+          description: No momento não foi possível processar sua requisição
+        "503":
+          description: No momento não foi possível processar sua requisição
+        "200":
+          description: Requisição processada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteDTOv2'
+      security:
+      - SSO TOKEN: []
+      - LOGIN: []
+      - LOGIN: []
+  /detalhamento/{numeroConvenio}:
+    get:
+      tags:
+      - API Detalhar Convênio
+      summary: Detalhar Convênio
+      description: Detalhar Convênio por id
+      parameters:
+      - name: numeroConvenio
+        in: path
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "400":
+          description: Requisição recebida não é válida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "401":
+          description: Não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "403":
+          description: Token inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "404":
+          description: Requisição não retornou dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "500":
+          description: No momento não foi possível processar sua requisição
+        "503":
+          description: No momento não foi possível processar sua requisição
+      security:
+      - SSO TOKEN: []
+      - LOGIN: []
+      - LOGIN: []
+  /empregado/{matricula}:
+    get:
+      tags:
+      - API Empregado
+      summary: API Empregado
+      description: Consultar dados básicos do empregado CAIXA
+      parameters:
+      - name: matricula
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Requisição recebida não é válida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "401":
+          description: Não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "403":
+          description: Token inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "404":
+          description: Requisição não retornou dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "500":
+          description: No momento não foi possível processar sua requisição
+        "503":
+          description: No momento não foi possível processar sua requisição
+      security:
+      - SSO TOKEN: []
+      - LOGIN: []
+      - LOGIN: []
+  /parametros:
+    get:
+      tags:
+      - API Parâmetros
+      summary: Lista parametros de convênio
+      description: Lista os parâmetros de convênio
+      responses:
+        "400":
+          description: Requisição recebida não é válida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "401":
+          description: Não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "403":
+          description: Token inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "404":
+          description: Requisição não retornou dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "500":
+          description: No momento não foi possível processar sua requisição
+        "503":
+          description: No momento não foi possível processar sua requisição
+        "200":
+          description: Requisição processada com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+      security:
+      - SSO TOKEN: []
+      - LOGIN: []
+      - LOGIN: []
+  /situacao:
+    get:
+      tags:
+      - API Situação
+      summary: 'Lista Tipos de Situação '
+      description: Lista os tipos de situação
+      responses:
+        "400":
+          description: Requisição recebida não é válida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "401":
+          description: Não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "403":
+          description: Token inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "404":
+          description: Requisição não retornou dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "500":
+          description: No momento não foi possível processar sua requisição
+        "503":
+          description: No momento não foi possível processar sua requisição
+        "200":
+          description: Requisição processada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TipoSituacao'
+      security:
+      - SSO TOKEN: []
+      - LOGIN: []
+      - LOGIN: []
+  /unidade/{unidade}:
+    get:
+      tags:
+      - API Unidade
+      summary: API Unidade
+      description: Consultar nome da unidade informada
+      parameters:
+      - name: unidade
+        in: path
+        required: true
+        schema:
+          type: integer
+      responses:
+        "400":
+          description: Requisição recebida não é válida
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "401":
+          description: Não autenticado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "403":
+          description: Token inválido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "404":
+          description: Requisição não retornou dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResponseDTO'
+        "500":
+          description: No momento não foi possível processar sua requisição
+        "503":
+          description: No momento não foi possível processar sua requisição
+      security:
+      - SSO TOKEN: []
+      - LOGIN: []
+      - LOGIN: []
+components:
+  schemas:
+    Alcada:
+      required:
+      - nomeAlcada
+      type: object
+      properties:
+        id:
+          format: int32
+          type: integer
+        nivel:
+          format: int32
+          description: Numero do nivel de alcada
+          type: integer
+          example: 1
+        nomeAlcada:
+          description: Nome da alçada
+          pattern: \S
+          type: string
+          example: Agencia
+        alcadaAtiva:
+          description: Identifica se a alçada está ATIVA ou INATIVA
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoFlag'
+          example: S
+    AssinantesConvenio:
+      type: object
+      properties:
+        nome:
+          type: string
+        cpf:
+          type: string
+        email:
+          type: string
+        telefone:
+          type: string
+        tipoAssinante:
+          $ref: '#/components/schemas/EnumTipoAssinante'
+        vinculo:
+          type: string
+        matricula:
+          type: string
+        assinanteComRestricao:
+          type: boolean
+    AssinaturaParteConvenioDTO:
+      type: object
+      properties:
+        tipoAssinatura:
+          $ref: '#/components/schemas/EnumTipoAssinatura'
+        socioRepresentanteLegalConvenio:
+          type: array
+          items:
+            $ref: '#/components/schemas/SocioRepresentanteLegalConvenioDTO'
+        representanteCaixaConvenio:
+          type: array
+          items:
+            $ref: '#/components/schemas/RepresentanteCaixaConvenioDTO'
+        testemunhaConvenio:
+          type: array
+          items:
+            $ref: '#/components/schemas/TestemunhaConvenioDTO'
+    AuditoriaDTO:
+      required:
+      - sessao
+      - evento
+      - modulo
+      - tipoOperacao
+      - responsavel
+      - datahora
+      - enderecoIp
+      type: object
+      properties:
+        sessao:
+          description: Identificador da Transacao
+          pattern: \S
+          type: string
+          example: d49eb6f1-0cd2-4e9a-abbd-3474f3da51cd
+        evento:
+          description: Evento auditável no padrão
+          pattern: \S
+          type: string
+          example: Procedimento X com conteudo Y para finalidade Z
+        modulo:
+          description: Nome do modulo
+          pattern: \S
+          type: string
+          example: SIACC-PixAutomatico-Template
+        tipoOperacao:
+          description: Nome da operação
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoOperacao'
+        responsavel:
+          description: Matricula do responsavel ou nome do processo batch
+          pattern: \S
+          type: string
+          example: c123456
+        datahora:
+          description: Data/hora do Evento no formato YYYY-MM-DD HH:MM:SS.ZZZZZZ
+          pattern: \S
+          type: string
+          example: '%DATAHORA%'
+        enderecoIp:
+          description: Endereço IP
+          pattern: \S
+          type: string
+          example: 192.168.0.2
+    CampanhaDTO:
+      type: object
+      properties:
+        id:
+          format: int32
+          type: integer
+        nome:
+          type: string
+        periodo:
+          type: string
+        vantagens:
+          type: string
+        publicoAlvo:
+          type: string
+        descricao:
+          type: string
+    ChavePix:
+      type: object
+      properties:
+        tipoChave:
+          type: string
+        agencia:
+          type: string
+        cnpj:
+          type: string
+        razaoSocial:
+          type: string
+        produto:
+          type: string
+        numeroConta:
+          type: string
+        dbConta:
+          type: string
+        quantidadeChavesAtivasVinculadas:
+          format: int32
+          type: integer
+        tipoConta:
+          type: string
+        chave:
+          type: string
+        dataInativacao:
+          $ref: '#/components/schemas/LocalDateTime'
+    ClienteDTOv2:
+      type: object
+      properties:
+        cnpj:
+          type: string
+        razaoSocial:
+          type: string
+        restricoesSicow:
+          type: array
+          items:
+            type: string
+        necessarioContaPj:
+          type: boolean
+        cadastroAtualizado:
+          type: boolean
+        clienteFidelizado:
+          type: boolean
+        chavePixCadastrada:
+          type: boolean
+        nomeUnidade:
+          type: string
+        convenios:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConvenioResponseDTO'
+    ContaConvenio:
+      required:
+      - agencia
+      - operacao
+      - conta
+      - dv
+      - tipoConta
+      type: object
+      properties:
+        agencia:
+          title: Numero da agência
+          description: Número da agênica da conta
+          type: integer
+        operacao:
+          title: Número da operação da conta
+          description: Número da operação da conta
+          type: integer
+        conta:
+          format: int64
+          title: Número da conta
+          description: Número da conta CAIXA para repasse de valores para o conveniado.
+          type: integer
+        dv:
+          title: Dígito da conta
+          description: Dígito da conta CAIXA para repasse de valores para o conveniado.
+          type: integer
+        tipoConta:
+          title: Tipo da conta
+          description: Indica o a finalidade da conta. Conta para repasse/debitar
+            tarifa
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoConta'
+    ContaDTO:
+      type: object
+      properties:
+        numeroAgencia:
+          format: int32
+          type: integer
+        codigoOperacao:
+          format: int32
+          type: integer
+        numeroConta:
+          format: int64
+          type: integer
+        dvConta:
+          format: int32
+          type: integer
+    ContaPj:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        codigoOperacao:
+          type: string
+        numeroAgencia:
+          type: string
+        numeroConta:
+          type: string
+        dbConta:
+          type: string
+    ContatoConvenioDTO:
+      type: object
+      properties:
+        email:
+          type: string
+        telefone:
+          type: array
+          items:
+            type: string
+    Convenio:
+      required:
+      - id
+      - tipoServico
+      - cnpj
+      - convenioInterno
+      - unidadeInclusao
+      - unidadeRelacionamento
+      - convenioOriginal
+      - tipoAssinatura
+      - listaSituacao
+      type: object
+      properties:
+        id:
+          format: int64
+          title: Identificador do convênio negocial
+          description: Preenchido com numero único de identificação do convênio
+          type: integer
+        simulacaoNegocialConvenio:
+          title: Simulação usada para gerar o convênio
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/SimulacaoNegocialConvenio'
+        tipoServico:
+          title: Tipo de serviço
+          description: Identifica o tipo de serviço prestado
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TipoServico'
+        cnpj:
+          title: CNPJ do solicitante
+          description: CNPJ do solicitante
+          type: string
+        apelido:
+          title: Apelido do convênio
+          description: Nome único usado para referenciar um convênio
+          type: string
+        convenioInterno:
+          title: Indica se é um convenio interno.
+          description: Indica se é um convenio interno.
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoFlag'
+          example: S
+        unidadeConvenioInterno:
+          title: Número da unidade de relacionamento do convênio interno
+          description: Número da unidade de relacionamento do convênio interno
+          type: integer
+        unidadeInclusao:
+          title: Número da unidade de inclusão do convenio
+          description: Número da unidade de inclusão que formalizou o convênio. (responsável
+            pelo convênio)
+          type: integer
+        unidadeRelacionamento:
+          title: Número da unidade de relacionamento
+          description: Número da unidade de relacionamento que formalizou o convênio.
+            (responsável pelo convênio)
+          type: integer
+        convenioOriginal:
+          title: Convênio original
+          description: Convênio original que originou o novo convênio
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Convenio'
+        tipoAssinatura:
+          title: Tipo de Assinatura
+          description: 'Indica qual o tipo de assinatura do convenio. '
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoAssinatura'
+        nroConvenioIniciadoraPgto:
+          format: int32
+          title: Convênio iniciadora de pagamentos
+          description: Número do convênio do iniciadora de pagamentos
+          type: integer
+        listaSituacao:
+          title: Lista de situacoes vinculadas a este convenio
+          type: array
+          items:
+            $ref: '#/components/schemas/ConvenioSituacao'
+        conveniosItem:
+          title: Lista de itens vinculados a este convênio
+          type: array
+          items:
+            $ref: '#/components/schemas/ConvenioItem'
+        partesConvenio:
+          title: Lista de partes assinantes a este convênio
+          type: array
+          items:
+            $ref: '#/components/schemas/ParteConvenio'
+        contas:
+          title: Lista de contas associadas a este convênio
+          type: array
+          items:
+            $ref: '#/components/schemas/ContaConvenio'
+        cnpjString:
+          type: string
+    ConvenioItem:
+      required:
+      - convenioNegocial
+      - itemConvenio
+      - dataInclusaoConvenioItem
+      type: object
+      properties:
+        convenioNegocial:
+          title: Identificação da simulação negocial de um convênio
+          description: Deve ser preenchido com os dados da simulação proposta por
+            um cliente para um pacote de serviços personalizado
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Convenio'
+        itemConvenio:
+          title: Identificação das tarifas que a CAIXA pode receber em proposta comercial
+          description: Deve ser preenchido com os dados da tarifa que a CAIXA pode
+            receber em proposta comercial para um pacote de serviço personalizado
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ItemConvenio'
+        valorConvenioItem:
+          title: Valor do item/tarifa da convênio.
+          description: Valor da tarifa que o cliente deseja ter no convênio. Não haverá
+            valor para o tipo de item de convênio = exceção. É aceitável valor de
+            tarifa zero para um convênio.
+          type: number
+        qtdConvenioItem:
+          format: int32
+          title: Quantidade do item desejada pelo cliente no convenio.
+          description: Quantidade do item desejada pelo cliente no convênio. Não haverá
+            quantidade para o tipo de item de convênio = exceção ou valor.
+          type: integer
+        dataInclusaoConvenioItem:
+          title: Data de inclusão da tarifa/item convênio.
+          description: Momento em que a tarifa foi incluída no convênio
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+        dataConvenioItem:
+          title: Data/hora de item desejada pelo cliente no convenio.
+          description: "O cliente pode incluir ou não um item de convênio vinculado\
+            \ a uma data. Pode ser um prazo, validade, data fim"
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+        descricaoConvenioItem:
+          title: Descrição do item de convenio.
+          description: Descrição do item de convenio. O cliente pode incluir ou não
+            uma descrição/observação no item de um convênio
+          type: string
+        convenioItemAtivo:
+          title: Identifica se o item de convênio está ATIVO ou INATIVO (exclusão
+            lógica).
+          description: Identifica se o item de convênio está ATIVO ou INATIVO (exclusão
+            lógica). S - Sim / N = Não
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoFlag'
+    ConvenioResponseDTO:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        razaoSocial:
+          type: string
+        apelido:
+          type: string
+        carteira:
+          type: string
+        tipo_servico:
+          $ref: '#/components/schemas/TipoServico'
+        cnpj:
+          type: string
+        unidade_relacionamento:
+          type: integer
+        qt_dias_isencao_tarifas:
+          type: integer
+        qt_tentativas_efetivacao:
+          type: integer
+        valor_medio_transacao:
+          type: number
+        qt_agendamento_mes:
+          format: int32
+          type: integer
+        vencimento_convenio:
+          $ref: '#/components/schemas/LocalDate'
+        flag_iniciadora_pagamento:
+          $ref: '#/components/schemas/EnumTipoFlag'
+        nro_convenio_iniciador_pgto:
+          format: int32
+          type: integer
+        convenioSituacao:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConvenioSituacao'
+        conveniosItem:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConvenioItem'
+        diferenciais:
+          type: string
+    ConvenioSituacao:
+      required:
+      - tipoSituacao
+      type: object
+      properties:
+        tipoSituacao:
+          title: Tipo da situação
+          description: Preenchido com tipo da situação
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TipoSituacao'
+        tsSituacao:
+          description: data e horario da intervencao do convenio
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+          example: 24-05-07 15:30:00
+        coUsuarioAlcada:
+          description: Matricula do usuario do convenio
+          type: string
+          example: C131110
+    DadosCadastrais:
+      type: object
+      properties:
+        razaoSocial:
+          type: string
+        nomeFantasia:
+          type: string
+        bairro:
+          type: string
+        logradouro:
+          type: string
+        complemento:
+          type: string
+        numero:
+          type: string
+        cep:
+          type: string
+        UF:
+          type: string
+        cidade:
+          type: string
+        email:
+          type: string
+        telefone_1:
+          type: string
+        telefone_2:
+          type: string
+        cnae:
+          type: string
+        nicho:
+          type: string
+        naturezaJuridica:
+          type: string
+        segmento:
+          type: string
+    DadosCadastraisConvenioDTO:
+      type: object
+      properties:
+        cnpj:
+          type: string
+        razaoSocial:
+          type: string
+        nomeFantasia:
+          type: string
+        convenioInternoCaixa:
+          type: boolean
+        unidadeConvenioInternoCaixa:
+          type: integer
+        enderecoConvenio:
+          $ref: '#/components/schemas/EnderecoConvenioDTO'
+        contatoConvenio:
+          $ref: '#/components/schemas/ContatoConvenioDTO'
+        dadosGeraisConvenio:
+          $ref: '#/components/schemas/DadosGeraisConvenioDTO'
+    DadosGeraisConvenioDTO:
+      type: object
+      properties:
+        cnae:
+          type: string
+        nicho:
+          type: string
+        naturezaJuridica:
+          type: string
+        segmento:
+          type: string
+    DocumentoSimulacaoAlcada:
+      required:
+      - id
+      - tipoSituacao
+      - nomeDocumento
+      - caminhoDocumento
+      type: object
+      properties:
+        id:
+          format: int64
+          title: Identificador do documento simulacao alçada
+          description: Preenchido com numero único de identificação do documento
+          type: integer
+        alcada:
+          description: Chave estrangeira da tabela alçada
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Alcada'
+          example: 1
+        tipoSituacao:
+          title: Tipo da situação
+          description: Preenchido com tipo da situação
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TipoSituacao'
+        nomeDocumento:
+          title: Nome do documento
+          description: Nome do arquivo que contém o documento anexado à simulação.
+          type: string
+        caminhoDocumento:
+          title: Caminho do documento
+          description: Local/endereço de um servidor onde o arquivo está guardado.
+          type: string
+    EnderecoConvenioDTO:
+      type: object
+      properties:
+        logradouro:
+          type: string
+        numero:
+          type: string
+        complemento:
+          type: string
+        bairro:
+          type: string
+        cidade:
+          type: string
+        uf:
+          type: string
+        cep:
+          type: string
+    EnumFormaRepasse:
+      enum:
+      - 1
+      - 2
+      type: string
+    EnumItemConvenio:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+      - 14
+      - 15
+      - 16
+      - 17
+      - 18
+      - 19
+      - 20
+      - 21
+      - 22
+      - 23
+      - 24
+      type: string
+    EnumItemSimulacao:
+      enum:
+      - 11
+      - 12
+      - 13
+      - 14
+      - 15
+      - 16
+      - 21
+      - 22
+      - 23
+      - 24
+      - 25
+      - 26
+      - 27
+      - 28
+      - 29
+      type: string
+    EnumTipoAssinante:
+      enum:
+      - 1
+      - 2
+      - 3
+      type: string
+    EnumTipoAssinatura:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      type: string
+    EnumTipoConta:
+      enum:
+      - 1
+      - 2
+      - 3
+      type: string
+    EnumTipoFlag:
+      enum:
+      - null
+      - null
+      type: string
+    EnumTipoFrequenciaConvenio:
+      enum:
+      - 1
+      - 2
+      type: string
+    EnumTipoItemConvenio:
+      enum:
+      - 1
+      - 2
+      type: string
+    EnumTipoItemSimulacao:
+      enum:
+      - 1
+      - 2
+      - 3
+      type: string
+    EnumTipoOperacao:
+      enum:
+      - INCLUSAO
+      - ALTERACAO
+      - EXCLUSAO
+      - CONSULTA
+      - PROCESSAMENTO
+      - ADMINISTRATIVO
+      type: string
+    EnumTipoPrazoConvenio:
+      enum:
+      - 1
+      - 2
+      type: string
+    EnumTipoServico:
+      enum:
+      - null
+      type: string
+    EnumTipoSituacao:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      - 5
+      - 6
+      - 7
+      - 8
+      - 9
+      - 10
+      - 11
+      - 12
+      - 13
+      - 14
+      - 15
+      type: string
+    EnumTipoTarifa:
+      enum:
+      - 1
+      - 2
+      - 3
+      - 4
+      type: string
+    Indice:
+      type: object
+      properties:
+        nome:
+          type: string
+        valor:
+          type: string
+    ItemConvenio:
+      required:
+      - id
+      - TipoItemConvenio
+      - nomeItemConvenio
+      - situacaoItem
+      - dataInicioVigencia
+      type: object
+      properties:
+        id:
+          title: Identificador do tipo item convênio.
+          description: Preenchido com numero único que identifica os itens de convênio
+            que a CAIXA pode receber em proposta comercial para um pacote de serviço
+            personalizado
+          type: integer
+        TipoItemConvenio:
+          title: Identificação do convneio negocial
+          description: Classifica os itens de convenio que a CAIXA pode receber em
+            proposta comercial para um pacote de serviço personalizado
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TipoItemConvenio'
+        nomeItemConvenio:
+          title: Nome do tipo do item/tarifa.
+          description: Nome do tipo do item/tarifa que a CAIXA pode receber em proposta
+            comercial para um pacote de serviço personalizado.
+          type: string
+        situacaoItem:
+          title: Situacao da tarifa.
+          description: Identifica se o tipo da tarifa está ATIVO("S") ou INATIVO("N")
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoFlag'
+        dataInicioVigencia:
+          title: Data de início de vigência do item.
+          description: Data de início de vigência do item de convenio da tarifa.
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+        dataFimVigencia:
+          title: Data do fim de vigência do item.
+          description: Data do fim de vigência do item de convenio da tarifa.
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+        enum:
+          $ref: '#/components/schemas/EnumItemConvenio'
+    ItemSimulacao:
+      required:
+      - id
+      - tipoItemSimulacao
+      - nomeItemSimulacao
+      - situacaoItem
+      - dataInicioVigencia
+      type: object
+      properties:
+        id:
+          title: Identificador do tipo item simulação.
+          description: Preenchido com numero único que identifica os itens de simulação
+            que a CAIXA pode receber em proposta comercial para um pacote de serviço
+            personalizado
+          type: integer
+        tipoItemSimulacao:
+          title: Identificação da simulação negocial de um convênio
+          description: Classifica os itens de simulação que a CAIXA pode receber em
+            proposta comercial para um pacote de serviço personalizado
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TipoItemSimulacao'
+        nomeItemSimulacao:
+          title: Nome do tipo do item/tarifa.
+          description: Nome do tipo do item/tarifa que a CAIXA pode receber em proposta
+            comercial para um pacote de serviço personalizado.
+          type: string
+        situacaoItem:
+          title: Situacao da tarifa.
+          description: Identifica se o tipo da tarifa está ATIVO("S") ou INATIVO("N")
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoFlag'
+        dataInicioVigencia:
+          title: Data de início de vigência do item.
+          description: Data de início de vigência do item de simulação da tarifa.
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+        dataFimVigencia:
+          title: Data do fim de vigência do item.
+          description: Data do fim de vigência do item de simulação da tarifa.
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+        enum:
+          $ref: '#/components/schemas/EnumItemSimulacao'
+    LocalDate:
+      format: date
+      type: string
+      example: 2022-03-10
+    LocalDateTime:
+      format: date-time
+      type: string
+      example: 2022-03-10T12:15:50
+    MensagemObservacao:
+      type: object
+      properties:
+        tipo:
+          $ref: '#/components/schemas/TipoMensagemObservacao'
+        mensagem:
+          type: string
+    ParametrosConvenioDTO:
+      type: object
+      properties:
+        chavePixConvenio:
+          type: string
+        trocaInformacoesGerenciadorFinanceiro:
+          type: boolean
+        trocaInformacoesApi:
+          type: boolean
+        trocaInformacoesVan:
+          type: boolean
+        trocaInformacoesVanOpcao:
+          type: string
+        formaRepasse:
+          $ref: '#/components/schemas/EnumFormaRepasse'
+        contaRepasse:
+          $ref: '#/components/schemas/ContaDTO'
+        contaDebitoTarifa:
+          $ref: '#/components/schemas/ContaDTO'
+        tipoPrazoConvenio:
+          $ref: '#/components/schemas/EnumTipoPrazoConvenio'
+        dataFimConvenio:
+          $ref: '#/components/schemas/LocalDate'
+        tipoFrequenciaConvenio:
+          $ref: '#/components/schemas/EnumTipoFrequenciaConvenio'
+        renovacaoAutomaticaNecessidadeAditivoContratual:
+          type: boolean
+        renovacaoAutomaticaNecessidadeAjustarTarifa:
+          type: boolean
+        renovacaoAutomaticaPrazoMaximo:
+          $ref: '#/components/schemas/LocalDate'
+        prorrogavelPrazoMaximo:
+          $ref: '#/components/schemas/LocalDate'
+        numeroIniciadoraCaixa:
+          format: int32
+          type: integer
+        indiceTarifas:
+          type: string
+    ParteConvenio:
+      required:
+      - id
+      - convenio
+      - tipoAssinante
+      type: object
+      properties:
+        id:
+          format: int64
+          title: Identificador da parte do convênio.
+          description: Número sequencial que identifica o a parte assinante do convênio.
+          type: integer
+        convenio:
+          title: Identificador do convênio negocial
+          description: Preenchido com numero único de identificação do convênio
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Convenio'
+        tipoAssinante:
+          title: Tipo de Assinante do convênio
+          description: "Indica qual o tipo de assinante do convenio. Ex: Representante,\
+            \ Caixa, Testemunha "
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoAssinante'
+        cpf:
+          title: CPF da parte do convênio
+          description: CPF da parte do convênio
+          type: string
+        matricula:
+          title: Matrícula do representante caixa
+          description: Matrícula do representante Caixa
+          type: string
+    RepresentanteCaixaConvenioDTO:
+      type: object
+      properties:
+        cpf:
+          type: string
+        nome:
+          type: string
+        matricula:
+          type: string
+        email:
+          type: string
+    RequestPreIncluirConvenioDTO:
+      required:
+      - cnpj
+      - cache
+      type: object
+      properties:
+        cnpj:
+          title: CNPJ para inclusão do Convênio
+          description: CNPJ para inclusão do Convênio
+          type: string
+        cache:
+          title: Indica se o prerequest usará cache para buscar os dados do sicli
+          description: Indica se o prerequest usará cache para buscar os dados do
+            sicli
+          type: boolean
+    ResponseDTO:
+      type: object
+      properties:
+        descricao:
+          type: array
+          items:
+            type: string
+        mensagem:
+          type: string
+        erro:
+          type: array
+          items:
+            type: string
+        causa: {}
+    ResponsePreIncluirConvenioDTO:
+      type: object
+      properties:
+        mensagens:
+          type: array
+          items:
+            $ref: '#/components/schemas/MensagemObservacao'
+        tarifasConvenio:
+          type: array
+          items:
+            $ref: '#/components/schemas/TarifasLista'
+        dadosCadastrais:
+          $ref: '#/components/schemas/DadosCadastrais'
+        chavesPix:
+          type: array
+          items:
+            $ref: '#/components/schemas/ChavePix'
+        viaVan:
+          type: array
+          items:
+            $ref: '#/components/schemas/ViaVan'
+        contas:
+          type: array
+          items:
+            $ref: '#/components/schemas/ContaPj'
+        indice:
+          type: array
+          items:
+            $ref: '#/components/schemas/Indice'
+        representantes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssinantesConvenio'
+    SimulacaoAlcada:
+      required:
+      - tipoSituacao
+      type: object
+      properties:
+        alcada:
+          description: Chave estrangeira da tabela alçada
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/Alcada'
+          example: 1
+        tipoSituacao:
+          title: Tipo da situação
+          description: Preenchido com tipo da situação
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TipoSituacao'
+        unidadeAlcada:
+          format: int32
+          description: codigo numérico da unidade da alçada
+          type: integer
+          example: 1
+        tsAlcada:
+          description: data e horario da intervencao da alcada
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+          example: 24-05-07 15:30:00
+        coUsuarioAlcada:
+          description: Matricula do usuario da alcada
+          type: string
+          example: C131110
+        parecer:
+          description: Justificativa da alçada que embase a decisão em relação a simulação
+          type: string
+          example: Simulação aceita
+        documentos:
+          type: array
+          items:
+            $ref: '#/components/schemas/DocumentoSimulacaoAlcada'
+    SimulacaoItem:
+      required:
+      - simulacaoNegocialConvenio
+      - itemSimulacao
+      - dataSimulacaoItem
+      type: object
+      properties:
+        simulacaoNegocialConvenio:
+          title: Identificação da simulação negocial de um convênio
+          description: Deve ser preenchido com os dados da simulação proposta por
+            um cliente para um pacote de serviços personalizado
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/SimulacaoNegocialConvenio'
+        itemSimulacao:
+          title: Identificação das tarifas que a CAIXA pode receber em proposta comercial
+          description: Deve ser preenchido com os dados da tarifa que a CAIXA pode
+            receber em proposta comercial para um pacote de serviço personalizado
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/ItemSimulacao'
+        valorSimulacaoItem:
+          title: Valor do item/tarifa da simulação.
+          description: Valor da tarifa que o cliente deseja ter na simulação. Não
+            haverá valor para o tipo de item de simulação = exceção. É aceitável valor
+            de tarifa zero para uma simulação.
+          type: number
+        qtdSimulacaoItem:
+          format: int32
+          title: Quantidade do item de simulação desejada pelo cliente na simulação.
+          description: Quantidade do item de simulação desejada pelo cliente na simulação.
+            Não haverá quantidade para o tipo de item de simulação = exceção ou valor.
+          type: integer
+        dataSimulacaoItem:
+          title: Data de inclusão da tarifa/item simulação.
+          description: Momento em que a tarifa foi incluída na simulação
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDateTime'
+        descricaoSimulacaoItem:
+          title: Descrição do item de simulação.
+          description: Descrição do item de simulação. O cliente pode incluir ou não
+            uma descrição/observação no item de uma simulação
+          type: string
+        coUsuarioSimulacaoItem:
+          title: Código do usuário CAIXA responsável pelo item de simulação.
+          description: Código do usuário CAIXA responsável pelo item de simulação.
+          type: string
+        simulacaoItemAtivo:
+          title: Identifica se o item de simulação está ATIVO ou INATIVO (exclusão
+            lógica).
+          description: Identifica se o item de simulação está ATIVO ou INATIVO (exclusão
+            lógica). S - Sim / N = Não
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoFlag'
+    SimulacaoNegocialConvenio:
+      required:
+      - id
+      - tipoServico
+      - cnpj
+      - unidadeRelacionamento
+      - qtdTentativasEfetivacao
+      - qtdAgendamentosMes
+      - valorMedioTransacao
+      - vencimentoSimulacao
+      - flagIniciadorPagamento
+      - simulacaoGeradora
+      - contaUnicaRepasseTarifa
+      - alteracaoConvenio
+      - simulacoesAlcada
+      type: object
+      properties:
+        id:
+          format: int64
+          title: Identificador da simulação negocial
+          description: Preenchido com numero único de identificação da simulação
+          type: integer
+        tipoServico:
+          title: Tipo de serviço
+          description: Identifica o tipo de serviço prestado
+          type: object
+          allOf:
+          - $ref: '#/components/schemas/TipoServico'
+        simulacaoOriginal:
+          $ref: '#/components/schemas/SimulacaoNegocialConvenio'
+        cnpj:
+          title: CNPJ do solicitante
+          description: CNPJ do solicitante
+          type: string
+        unidadeRelacionamento:
+          title: Número da unidade de relacionamento
+          description: Número da unidade de relacionamento do solicitante
+          type: integer
+        qtdTentativasEfetivacao:
+          title: Quantidade de tentativas de efetivação
+          description: Quantidade de tentativas de efetivação do agendamento
+          type: integer
+        qtdAgendamentosMes:
+          format: int32
+          title: Quantidade de angedamento mês do cliente
+          description: Quantidade prevista pelo cliente de agendamentos mensal a ser
+            usado no pacote de serviço.
+          type: integer
+        valorMedioTransacao:
+          title: Valor médio por transação
+          description: Estimativa do valor médio por transação
+          pattern: "\\d{1,10}\\,\\d{2}"
+          type: number
+        vencimentoSimulacao:
+          title: Data de vencimento da simulação
+          description: Data de vencimento da simulação
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+        flagIniciadorPagamento:
+          title: Iniciadora de pagamentos
+          description: Indica se utiliza a Caixa como iniciadora de pagamentos
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoFlag'
+          example: S
+        nroConvenioIniciadorPgto:
+          format: int32
+          title: Convênio iniciador de pagamentos
+          description: Número do convênio do iniciador de pagamentos
+          type: integer
+        simulacaoGeradora:
+          title: Simulacao geradora de contraproposta
+          description: Indicativo se a simulacao gerou contraproposta
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoFlag'
+          example: S
+        contaUnicaRepasseTarifa:
+          title: Indica se a conta de repasse será a mesma conta de tarifa.
+          description: 'Indica se a conta de repasse será a mesma conta de tarifa
+            (mesma conta para a CAIXA repassar valores e cobrar tarifa) '
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoFlag'
+          example: S
+        alteracaoConvenio:
+          title: Indica se é uma alteração em um convênio já existente.
+          description: Indica se a simulação está propondo uma alteração em um convênio
+            já existente.
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoFlag'
+          example: S
+        simulacoesAlcada:
+          title: Lista de simulacoes alcadas vinculadas a esta simulacao
+          type: array
+          items:
+            $ref: '#/components/schemas/SimulacaoAlcada'
+        simulacoesItem:
+          title: Lista de simulacoes itens vinculadas a esta simulacao
+          type: array
+          items:
+            $ref: '#/components/schemas/SimulacaoItem'
+        cnpjString:
+          type: string
+    SocioRepresentanteLegalConvenioDTO:
+      type: object
+      properties:
+        cpf:
+          type: string
+        telefone:
+          type: string
+        email:
+          type: string
+        vinculo:
+          type: string
+    TarifaConvenioDTO:
+      required:
+      - tipo
+      - tarifaPagadoresCaixa
+      - tarifaPagadoresOutras
+      - tarifaRetentativa
+      - diasDegustacao
+      type: object
+      properties:
+        tipo:
+          title: Tipo Tarifa
+          description: Tipo de Tarifa
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoTarifa'
+          example: "1"
+        id:
+          format: int64
+          type: integer
+        nome:
+          type: string
+        tarifaPagadoresCaixa:
+          format: double
+          title: Tarifa Pagador CAIXA
+          description: Tarifa de agendamento de pagadores conta CAIXA
+          minimum: 0
+          type: number
+          example: 4.0
+        tarifaPagadoresOutras:
+          format: double
+          title: Tarifa Pagador Outros
+          description: Tarifa de agendamento de pagadores conta CAIXA
+          minimum: 0
+          type: number
+          example: 4.5
+        tarifaRetentativa:
+          format: double
+          title: Tarifa Retentativa
+          description: Tarifa para retentativa de pagamento
+          minimum: 0
+          type: number
+          example: 0.05
+        diasDegustacao:
+          format: int32
+          title: Dias degustação
+          description: Quantidade de dias de degustação
+          minimum: 0
+          type: integer
+          example: 5
+        inibirRetentativa:
+          type: boolean
+        inibirOpenFinance:
+          type: boolean
+    TarifasLista:
+      type: object
+      properties:
+        tipo:
+          $ref: '#/components/schemas/EnumTipoTarifa'
+        id:
+          format: int64
+          type: integer
+        nome:
+          type: string
+        tarifaPagadoresCaixa:
+          format: double
+          type: number
+        tarifaPagadoresOutras:
+          format: double
+          type: number
+        tarifaRetentativa:
+          format: double
+          type: number
+        diasDegustacao:
+          format: int32
+          type: integer
+        excecaoContaDebitoDiferente:
+          type: boolean
+        excecaoInibirRetentativa:
+          type: boolean
+        excecaoInibirIniciadoraOpenFinance:
+          type: boolean
+    TestemunhaConvenioDTO:
+      type: object
+      properties:
+        nome:
+          type: string
+        matricula:
+          type: string
+        cpf:
+          type: string
+    TipoItemConvenio:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          format: int32
+          title: Identificador do tipo item convenio.
+          description: Preenchido com numero único que identifica os itens de convenio
+            que a CAIXA pode receber em proposta comercial para um pacote de serviço
+            personalizado
+          type: integer
+        descricaoTipoItemConvenio:
+          title: Descrição do item de convenio.
+          description: Descrição do item de convenio que a CAIXA pode receber em proposta
+            comercial para um pacote de serviço personalizado.
+          type: string
+        enum:
+          $ref: '#/components/schemas/EnumTipoItemConvenio'
+    TipoItemSimulacao:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          format: int32
+          title: Identificador do tipo item simulação.
+          description: Preenchido com numero único que identifica os itens de simulação
+            que a CAIXA pode receber em proposta comercial para um pacote de serviço
+            personalizado
+          type: integer
+        descricaoTipoItemSimulacao:
+          title: Descrição do item de simulação.
+          description: Descrição do item de simulação que a CAIXA pode receber em
+            proposta comercial para um pacote de serviço personalizado.
+          type: string
+        enum:
+          $ref: '#/components/schemas/EnumTipoItemSimulacao'
+    TipoMensagemObservacao:
+      enum:
+      - 0
+      - 1
+      - 2
+      - 3
+      - 4
+      type: string
+    TipoServico:
+      type: object
+      properties:
+        id:
+          description: Id do tipo de serviço
+          type: integer
+          example: 1
+        nomeTipoServico:
+          description: Nome do tipo de serviço
+          type: string
+          example: Pix Automático
+        tipoServicoAtivo:
+          description: Identifica se o tipo do serviço está ATIVO ou INATIVO
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoFlag'
+          example: S
+        inicioVigenciaTipoServico:
+          description: Data do fim da vigência do tipo de serviço
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+          example: "20240510"
+        fimVigenciaTipoServico:
+          description: Data do fim da vigência do tipo de serviço
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+          example: "20250510"
+        enum:
+          $ref: '#/components/schemas/EnumTipoServico'
+    TipoSituacao:
+      required:
+      - id
+      - nomeSituacao
+      - descricaoSituacao
+      - flagSituacaoAtiva
+      - dataInicioVigenciaTipoSituacao
+      type: object
+      properties:
+        id:
+          format: int32
+          title: Tipo de situação
+          description: Identificador do Tipo de situação
+          type: integer
+          example: 1
+        nomeSituacao:
+          title: Nome do Tipo de situação
+          description: Nome do Tipo de situação
+          type: string
+          example: INCLUÍDA
+        descricaoSituacao:
+          title: Descrição
+          description: Descrição do Tipo de situação
+          type: string
+        flagSituacaoAtiva:
+          title: Flag simulação ativa
+          description: Flag indicando se uma simulação está ativa
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/EnumTipoFlag'
+        dataInicioVigenciaTipoSituacao:
+          title: Data de inicio vigência
+          description: Data de inicio vigência da situação
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+        dataFimVigenciaTipoSituacao:
+          title: Data fim da vigência
+          description: Data fim da vigência da situação
+          type: string
+          allOf:
+          - $ref: '#/components/schemas/LocalDate'
+        enum:
+          $ref: '#/components/schemas/EnumTipoSituacao'
+    UploadItemSchema:
+      format: binary
+      type: string
+    ViaVan:
+      type: object
+      properties:
+        id:
+          format: int64
+          type: integer
+        idVan:
+          type: string
+        nome:
+          type: string
+  securitySchemes:
+    SSO TOKEN:
+      type: http
+      scheme: bearer
+      bearerFormat: jwt
+    SecurityScheme:
+      type: openIdConnect
+      description: Authentication
