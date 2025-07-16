@@ -1,1 +1,1 @@
-https://gid.caixa:9443/ccm/web/projects/Box%20Relacionamento%20Digital#action
+https://gid.caixa:9443/ccm/web/projects/Box%20Relacionamento%20Digital#action=com.ibm.team.workitem.viewQueries&tab=owned&queryItemId=_5tl79VNLEe-8L9z1mbxymQ&queryAction=com.ibm.team.workitem.runSavedQuery
